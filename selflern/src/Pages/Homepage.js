@@ -7,14 +7,12 @@ const DROPBOX_APP_KEY = "dtn9kriiez9h447";
 
 function Homepage() {
   const [files, setFiles] = useState([]);
-  const [inputText, setInputText] = useState(""); // Fixed default value
-  const [getOutput, setGetOutput] = useState(""); // Fixed default value
+  const [inputText, setInputText] = useState("");
+  const [getOutput, setGetOutput] = useState("");
 
-  // ✅ Dropbox File Selection Handler
   const onSuccess = async (selectedFiles) => {
     console.log("Selected Files:", selectedFiles);
 
-    // Convert files into correct format
     const fileObjects = selectedFiles.map((file) => ({
       id: file.id,
       name: file.name,
@@ -41,14 +39,12 @@ function Homepage() {
     }
   };
 
-
   const onCancel = () => {
     console.log("User cancelled file selection");
   };
 
-
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
 
     try {
       const response = await Axios.post("http://localhost:8000/ask", {
@@ -56,7 +52,7 @@ function Homepage() {
       });
 
       console.log("Response:", response.data);
-      setGetOutput(response.data.response); 
+      setGetOutput(response.data.response);
     } catch (error) {
       console.error("Error fetching response:", error);
     }
@@ -65,79 +61,57 @@ function Homepage() {
   return (
     <div>
       <Navbar />
-      <h1 className="text-cyan-700">Homepage</h1>
 
-   
-      <DropboxChooser
-        appKey={DROPBOX_APP_KEY}
-        success={onSuccess}
-        cancel={onCancel}
-        multiselect={true}
-      >
-        <button className="border-2 bg-blue-500 p-2 mx-20">Choose Files</button>
-      </DropboxChooser>
+      <div className=" flex justify-center">
+        <DropboxChooser
+          appKey={DROPBOX_APP_KEY}
+          success={onSuccess}
+          cancel={onCancel}
+          multiselect={true}
+        >
+          <button className=" bg-blue-500 my-10  rounded-2xl px-10 py-3 w-56 text-gray-100 shadow-md  shadow-black ">
+            Choose Files
+          </button>
+        </DropboxChooser>
 
-    
-      <div>
-        <h2>Selected Files</h2>
-        {files.map((file) => (
-          <p key={file.id}>
-            <strong>{file.name}</strong>:{" "}
-            <a href={file.link} target="_blank" rel="noopener noreferrer">
-              View
-            </a>
-          </p>
-        ))}
+        <div>
+          {files.map((file) => (
+            <p key={file.id}>
+              <strong>{file.name}</strong>:{" "}
+              <a href={file.link} target="_blank" rel="noopener noreferrer">
+                View
+              </a>
+            </p>
+          ))}
+        </div>
       </div>
 
       <br />
       <br />
 
- 
-      <form onSubmit={handleSubmit}>
+      <textarea
+        value={getOutput}
+        readOnly
+        className="border-2 border-zinc-500 w-11/12 h-96 ml-3  rounded-xl md:ml-12 sm:ml-8 lg:ml-20 lg:max-h-screen text-9xl"
+      ></textarea>
+
+      <br />
+      <br />
+      <form onSubmit={handleSubmit} className="flex">
         <input
           type="text"
           placeholder="Enter your query"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          style={{
-            border: "2px solid black",
-            width: "500px",
-            marginLeft: "100px",
-            padding: "5px",
-          }}
+          className="border-zinc-800 border-2 ml-24 w-10/12 mr-12 px-4 rounded-xl "
         />
         <button
           type="submit"
-          style={{
-            backgroundColor: "blue",
-            color: "white",
-            marginLeft: "20px",
-            padding: "5px 15px",
-          }}
+          className=" rounded-2xl bg-blue-600 px-5 py-3  text-zinc-50 text-base shadow-md  shadow-black"
         >
           Submit
         </button>
       </form>
-
-      <br />
-      <br />
-
-
-      <textarea
-        value={getOutput} // Display response
-        readOnly
-        style={{
-          border: "2px solid black",
-          height: "200px",
-          width: "50%",
-          marginLeft: "100px",
-          padding: "10px",
-        }}
-      ></textarea>
-
-      <br />
-      <br />
     </div>
   );
 }

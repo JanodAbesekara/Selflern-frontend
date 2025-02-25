@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../Componenet/Navbar";
 import DropboxChooser from "react-dropbox-chooser";
-import Axios from "axios";
+import API from "../Context/AxioxConfigure";
 
 const DROPBOX_APP_KEY = "dtn9kriiez9h447";
 
@@ -26,8 +26,8 @@ function Homepage() {
     console.log(fileObjects);
 
     try {
-      const response = await Axios.post(
-        "http://127.0.0.1:4000/pdf-link",
+      const response = await API.post(
+        "/pdf-link",
         { files: fileObjects },
         {
           headers: { "Content-Type": "application/json" },
@@ -47,7 +47,7 @@ function Homepage() {
     e.preventDefault();
 
     try {
-      const response = await Axios.post("http://127.0.0.1:4000/ask", {
+      const response = await API.post("/ask", {
         query: inputText,
       });
 

@@ -6,7 +6,7 @@ import Axios from "axios";
 const DROPBOX_APP_KEY = "dtn9kriiez9h447";
 
 function Homepage() {
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState([]);
   const [inputText, setInputText] = useState("");
   const [getOutput, setGetOutput] = useState("");
 
@@ -21,7 +21,7 @@ function Homepage() {
         .split("&dl=0")[0],
     }));
 
-    setFiles(fileObjects);
+    // setFiles(fileObjects);
 
     console.log(fileObjects);
 
@@ -47,7 +47,7 @@ function Homepage() {
     e.preventDefault();
 
     try {
-      const response = await Axios.post("http://localhost:8000/ask", {
+      const response = await Axios.post("http://127.0.0.1:4000/ask", {
         query: inputText,
       });
 
@@ -59,7 +59,7 @@ function Homepage() {
   };
 
   return (
-    <div>
+    <div className="">
       <Navbar />
 
       <div className=" flex justify-center">
@@ -74,7 +74,7 @@ function Homepage() {
           </button>
         </DropboxChooser>
 
-        <div>
+        {/* <div>
           {files.map((file) => (
             <p key={file.id}>
               <strong>{file.name}</strong>:{" "}
@@ -83,17 +83,18 @@ function Homepage() {
               </a>
             </p>
           ))}
-        </div>
+        </div> */}
       </div>
 
       <br />
       <br />
 
-      <textarea
+      <input
         value={getOutput}
         readOnly
-        className="border-2 border-zinc-500 w-11/12 h-96 ml-3  rounded-xl md:ml-12 sm:ml-8 lg:ml-20 lg:max-h-screen text-9xl"
-      ></textarea>
+        className="border-2 border-zinc-10 w-11/12 h-96 ml-3  rounded-xl md:ml-12 sm:ml-8 lg:ml-20 lg:max-h-screen
+         text-9xl text-2xl px-8 py-4 bg-neutral-200"
+      />
 
       <br />
       <br />
@@ -103,11 +104,11 @@ function Homepage() {
           placeholder="Enter your query"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          className="border-zinc-800 border-2 ml-24 w-10/12 mr-12 px-4 rounded-xl "
+          className="border-zinc-800 border-2 ml-5 w-full mr-5 px-4 rounded-xl lg:w-10/12 lg:ml-24"
         />
         <button
           type="submit"
-          className=" rounded-2xl bg-blue-600 px-5 py-3  text-zinc-50 text-base shadow-md  shadow-black"
+          className=" rounded-2xl bg-blue-600 px-5 py-3  text-zinc-50 text-base shadow-md  shadow-black mx-4"
         >
           Submit
         </button>

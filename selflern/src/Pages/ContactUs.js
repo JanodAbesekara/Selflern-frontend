@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import emailjs from "emailjs-com";
+
+
 
 function ContactUs() {
   const navigate = useNavigate();
@@ -8,6 +11,21 @@ function ContactUs() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
+  const ServiceID='service_mnw3s7q'
+  const Template_ID='template_b6lsj4y'
+  const Public_Key='7p1RugIJLHfZihZCL'
+
+
+
+  const templatePrams = {
+    from_name: name,
+    to_name: "Self Learner",
+    message: message,
+    from_email: email,
+  };
+
+
+
   const handleClose = () => {
     navigate("/");
   };
@@ -15,7 +33,20 @@ function ContactUs() {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      console.log(email, name, message);
+        emailjs.send(ServiceID, Template_ID, templatePrams, Public_Key).then(
+            (result) => {
+              console.log("success", result.text);
+              window.alert("Email Sent Successfully");
+              setEmail("");
+              setName("");
+              setMessage("");
+            },
+            (error) => {
+              console.log("error", error.text);
+            }
+          );
+
+        console.log(email , name, message);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -80,3 +111,5 @@ function ContactUs() {
 }
 
 export default ContactUs;
+
+// SertviceID= service_mnw3s7q
